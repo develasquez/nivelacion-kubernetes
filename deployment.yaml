@@ -15,7 +15,7 @@ spec:
       containers:
 # Puede ser una lista de contenedores en un POD
         - name: servicio
-          image: "gcr.io/gdgscl/servicio:2"
+          image: "gcr.io/gdgscl/servicio:4"
           ports:
             - name: http
               containerPort: 8080
@@ -36,8 +36,8 @@ spec:
 
           resources:
             limits:
-              cpu: 0.1
-              memory: "10Mi"
+              cpu: 0.2
+              memory: "100Mi"
 
               
 # Tipos de workloads
