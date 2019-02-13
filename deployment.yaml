@@ -19,7 +19,7 @@ spec:
           ports:
             - name: http
               containerPort: 8080
-# Veamos que Pod nos responde al Balancear              
+# Veamos que Pod nos responde al Balancear - Ver server.js              
           env:
             - name: MY_NODE_NAME
               valueFrom:
