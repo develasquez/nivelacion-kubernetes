@@ -31,6 +31,15 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+
+#Podemos limitar los recursos que utiliza cada Pod
+
+          resources:
+            limits:
+              cpu: 0.1
+              memory: "10Mi"
+
+              
 # Tipos de workloads
 
 # ReplicaSet
