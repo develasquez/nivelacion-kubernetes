@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: lb
+spec:
+  selector:
+    app: servicio
+
+#Lo realmente importante esta aca
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+#El tipo puede variar
+  type: LoadBalancer
+# ClusterIP
+# NodePort
+# ExternalName
