@@ -5,7 +5,7 @@ metadata:
 spec:
 # La mágia comienza acá
   replicas: 3
-  
+
   template:
     metadata:
       labels:
@@ -19,7 +19,18 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+# Veamos que Pod nos responde al Balancear              
+          env:
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
 
+                  
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
 # Tipos de workloads
 
 # ReplicaSet
