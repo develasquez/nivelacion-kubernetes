@@ -40,6 +40,50 @@ spec:
               memory: "100Mi"
 
               
+# Validamos que nuesto pod esta vivo
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+
+# Esperamos a que este listo para mandarle carga 
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+
+# A modo de ejemplo de auto escalamiento 
+#---
+#apiVersion: autoscaling/v2beta1
+#kind: HorizontalPodAutoscaler
+#metadata:
+#  name: servicio
+#  namespace: default
+#spec:
+#  scaleTargetRef:
+#    apiVersion: apps/v1beta1
+#    kind: Deployment
+#    name: servicio
+#  minReplicas: 1
+#  maxReplicas: 5
+#  metrics:
+#  - type: Resource
+#    resource:
+#      name: cpu
+#      target:
+#        type: Utilization
+#        averageUtilization: 50
+
+
 # Tipos de workloads
 
 # ReplicaSet
