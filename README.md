@@ -109,9 +109,9 @@ Y con el siguiente comando subimos la imagen tageada al registry.
     gcloud docker -- push -- gcr.io/MY-PROYECTO-GCP/servicio:1
 ```
 
-__-t__ para decir que vamos a tagear
-__gcr.io__ es el dominio que mediante el cual Google expone las imágenes (Es accesible solo dentro del proyecto por defecto, si se desea abrir al mundo se debe dar permisos al Google Cloud Storage que crea para almacenar estas imagenes en el proyecto).
-__.__ para decir que el Dockerfile esta en el directorio actual
+* __-t__ para decir que vamos a tagear
+* __gcr.io__ es el dominio que mediante el cual Google expone las imágenes (Es accesible solo dentro del proyecto por defecto, si se desea abrir al mundo se debe dar permisos al Google Cloud Storage que crea para almacenar estas imagenes en el proyecto).
+* __.__ para decir que el Dockerfile esta en el directorio actual
 
 
 ```yaml
