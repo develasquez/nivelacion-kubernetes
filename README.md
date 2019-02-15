@@ -8,7 +8,7 @@
 
 Para entender mejor este ejemplo te recomiendo viajar entre los Commits.
 
-para viajar en el tiempo a traves de los commits debes tomar los 7 caracteres de cada commit que viene aca abajo y ejecutar:
+para viajar en el tiempo a través de los commits debes tomar los 7 caracteres de cada commit que viene acá abajo y ejecutar:
 
 ```sh
     git checkout XXXXXXX #(dc0f9d8 por ejemplo)
@@ -39,7 +39,7 @@ y el código es mas o menos así
         console.log('Listos en el 8080');
     });
 ```
-Pero como vimos en la presentación lo que gobierna el mundo hoy es Docker asi que veamos como montar nuestro servicio en docker asi que vamos al siguiente commit.
+Pero como vimos en la presentación lo que gobierna el mundo hoy es Docker así que veamos cómo montar nuestro servicio en docker así que vamos al siguiente commit.
 
 __commit 2dbad3a__
 
@@ -55,7 +55,7 @@ Creamos el Dockerfile y ya tenemos nuestra App en un container.
     EXPOSE 8080
     CMD  ["node", "server.js"]
 ```
-Excelente ya tenemos el Docker pero lo que queremos es que esto corra en la Nube asi que vamos al siguiente commit y veamos que necesitamos tener para hacer que nuestro servicio reciba trafico.
+Excelente ya tenemos el Docker pero lo que queremos es que esto corra en la Nube así que vamos al siguiente commit y veamos que necesitamos tener para hacer que nuestro servicio reciba trafico.
 
 
 __commit d9b1e1d__
@@ -64,7 +64,7 @@ __commit d9b1e1d__
 
 Aqui entramos en el mundo de Kuberneres.
 
-Creamos un service de tipo LoadBalancer que va a ser la puerta de entrada a nuestro servicio y se va a encargar de distribuir los request entre los nodos.
+Creamos un service de tipo LoadBalancer que va a ser la puerta de entrada a nuestro servicio y se va a encargar de distribuir los request entre los Nodos, decir las máquinas virtuales en las que se despliegan nuestros Pods.
 
 ```yaml
     kind: Service
@@ -95,9 +95,9 @@ __commit b77b4db__
 
 ### 4 - Creamos el Deployment
 
-Quien se va a encargar de llevar nuestro contenedor a Kubernetes y crear las replicas necesarias es el Deployment.
+Quién se va a encargar de llevar nuestro contenedor a Kubernetes y crear las replicas necesarias es el Deployment.
 
-Pero antes tenemos que subir nuestro App "empaquetada" en Docker y dejarla en el Google Cloud Regitry de nuestro proyecto. Para ello debemos "Tagear" la imagen con docker poniendo como tag la url que tendra la imagen una vez que se suba al registry de Google en tu proyecto.
+Pero antes tenemos que subir nuestro App "empaquetada" en Docker y dejarla en el Google Cloud Registry de nuestro proyecto. Para ello debemos "Tagear" la imagen con docker poniendo como tag la url que tendrá la imagen una vez que se suba al registry de Google en tu proyecto.
 
 ```sh
     docker build -t "gcr.io/MY-PROYECTO-GCP/servicio:1" .
@@ -110,7 +110,7 @@ Y con el siguiente comando subimos la imagen tageada al registry.
 ```
 
 * __-t__ para decir que vamos a tagear
-* __gcr.io__ es el dominio que mediante el cual Google expone las imágenes (Es accesible solo dentro del proyecto por defecto, si se desea abrir al mundo se debe dar permisos al Google Cloud Storage que crea para almacenar estas imagenes en el proyecto).
+* __gcr.io__ es el dominio que mediante el cual Google expone las imágenes (Es accesible solo dentro del proyecto por defecto, si se desea abrir al mundo se debe dar permisos al Google Cloud Storage que crea para almacenar estas imágenes en el proyecto).
 * __.__ para decir que el Dockerfile esta en el directorio actual
 
 
@@ -148,12 +148,12 @@ Ya puedes probar tu servicio veamos que IP se asigno.
 ```sh
     kubectl get services
 ```
-Fijate la IP que te asigno y puedes abrirla en el browser o hacer un curl a lo macho.
+Fíjate la IP que te asigno y puedes abrirla en el browser o hacer un curl a lo macho.
 
 ```sh
     curl http://<LA IP DEL BALACEADOR>/
 ```
-Pero hagamos esto un poco mas interesante, entendamos como funciona el balanceo a nivel de Nodos y el balanceo a nivel de Pods (replicas)
+Pero hagamos esto un poco más interesante, entendamos cómo funciona el balanceo a nivel de Nodos y el balanceo a nivel de Pods (replicas)
 para eso vamos al siguiente commit.
 
 __commit d9c0028__
@@ -178,7 +178,7 @@ __commit d9c0028__
         containers:
     # Puede ser una lista de contenedores en un POD
             - name: servicio
-            image: "gcr.io/gdgscl/servicio:4"
+            image: "gcr.io/MY-PROYECTO-GCP/servicio:4"
             ports:
                 - name: http
                 containerPort: 8080
@@ -210,20 +210,20 @@ Y las leemos desde nuestro server.js
         });
     });
 ```
-Esto va a responder con el nombre del Nodo (la maquina virtual) y del Pod (Cada una de las preplicas de nuestro servicio).
+Esto va a responder con el nombre del Nodo (la maquina virtual) y del Pod (Cada una de las replicas de nuestro servicio).
 
-Quieres ver algo hermoso, ejecuta este comando y veras como funciona el valanceo en los dos niveles.
+Quieres ver algo hermoso, ejecuta este comando y veras como funciona el balanceo en los dos niveles.
 
 ```sh
     while true; do sleep 0.1; curl http://<LA IP DEL BALACEADOR>/; echo -e '\n';done
 ```
-ya tienes una configuracion básica de tu servicio. Veamos algunos conceptos que le darán más robustes a tu solucion en el siguiente commit.
+ya tienes una configuración básica de tu servicio. Veamos algunos conceptos que le darán más robustez a tu solución en el siguiente commit.
 
 __commit 88ad465__
 
 ### 6 - Limitamos el consumo de cada Pod
 
-Con kubernetes podemos establecer cuanta RAM y cuanta CPU va a tener disponible cada POD, de esta forma podemos controlar el uso y evitar que un error de código eleve el uso de CPU y Memoria y pueda hacer caer al Nodo completo, solo por poner un ejemplo.
+Con kubernetes podemos establecer cuánta RAM y cuánta CPU va a tener disponible cada POD, de esta forma podemos controlar el uso y evitar que un error de código eleve el uso de CPU y Memoria y pueda hacer caer al Nodo completo, solo por poner un ejemplo.
 
 ```yaml
     apiVersion: extensions/v1beta1
@@ -243,7 +243,7 @@ Con kubernetes podemos establecer cuanta RAM y cuanta CPU va a tener disponible 
         containers:
     # Puede ser una lista de contenedores en un POD
             - name: servicio
-            image: "gcr.io/gdgscl/servicio:4"
+            image: "gcr.io/MY-PROYECTO-GCP/servicio:4"
             ports:
                 - name: http
                 containerPort: 8080
@@ -267,7 +267,7 @@ Con kubernetes podemos establecer cuanta RAM y cuanta CPU va a tener disponible 
                 cpu: 0.2
                 memory: "100Mi"
 ```
-Ya a esta altura deberias saber como aplicarlo pero te dejo el comando por si acaso.
+Ya a esta altura deberías saber como aplicarlo pero te dejo el comando por si acaso.
 
 ```sh
     kubectl apply -f deployment.yaml
@@ -281,9 +281,9 @@ __commit 486b6c7__
 
 Lo último que veremos en este ejemplo son readinessProbe y livenessProbe.
 
-__readinessProbe__ este mecanismo permite establecer cuando nuestro servicio esta listo para recibir trafico, y evitar que el balanceador le envie peticiones antes de que este todo listo a nivel de servicio.
+__readinessProbe__ este mecanismo permite establecer cuando nuestro servicio esta listo para recibir trafico, y evitar que el balanceador le envíe peticiones antes de que este todo listo a nivel de servicio.
 
-__livenessProbe__ este mecanismo permite establecer un perior de tiempo y un endpoint de nuerstro servicio que sirva para preguntar si sigue con vida, de lo contrario Kubernetes va a matar al POD y crear uno nuevo, por que este no esta dando señales de vida.
+__livenessProbe__ este mecanismo permite establecer un periodo de tiempo y un endpoint de nuestro servicio que sirva para preguntar si sigue con vida, de lo contrario Kubernetes va a matar al POD y crear uno nuevo, por que este no esta dando señales de vida.
 
 
 ```yaml
@@ -304,7 +304,7 @@ __livenessProbe__ este mecanismo permite establecer un perior de tiempo y un end
         containers:
     # Puede ser una lista de contenedores en un POD
             - name: servicio
-            image: "gcr.io/gdgscl/servicio:4"
+            image: "gcr.io/MY-PROYECTO-GCP/servicio:4"
             ports:
                 - name: http
                 containerPort: 8080
@@ -350,13 +350,13 @@ __livenessProbe__ este mecanismo permite establecer un perior de tiempo y un end
                 initialDelaySeconds: 5
                 timeoutSeconds: 5
 ```
-Si a esta altura no sabes como aplicar esta configuracion estamos mal, pero te la dejo igual XD.
+Si a esta altura no sabes como aplicar esta configuración estamos mal, pero te la dejo igual XD.
 
 ```sh
     kubectl apply -f deployment.yaml
 ```
 
-Espero que esto te sirva para entender como funciona básicamente Kubernetes y como llevar tu servicio a la Nube muy facilmente.
+Espero que esto te sirva para entender cómo funciona básicamente Kubernetes y como llevar tu servicio a la Nube muy fácilmente.
 
 Un abrazo.
 
