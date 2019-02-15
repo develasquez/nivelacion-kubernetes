@@ -15,7 +15,8 @@ para viajar en el tiempo a traves de los commits debes tomar los 7 caracteres de
 ```
 
 __commit dc0f9d8__
-1 - App Base
+
+### 1 - App Base
 
 Nada que decir, esta es tu app y corre en tu pc con
 
@@ -41,7 +42,8 @@ y el código es mas o menos así
 Pero como vimos en la presentación lo que gobierna el mundo hoy es Docker asi que veamos como montar nuestro servicio en docker asi que vamos al siguiente commit.
 
 __commit 2dbad3a__
-2 - Dockerfile
+
+### 2 - Dockerfile
 Creamos el Dockerfile y ya tenemos nuestra App en un container.
 
 ```Dockerfile
@@ -57,7 +59,8 @@ Excelente ya tenemos el Docker pero lo que queremos es que esto corra en la Nube
 
 
 __commit d9b1e1d__
-3 - Creamos el Balanceador de carga
+
+### 3 - Creamos el Balanceador de carga
 
 Aqui entramos en el mundo de Kuberneres.
 
@@ -89,7 +92,8 @@ Para crear este balanceador dentro de GCP y que apunte al servicio dentro de nue
 Lo interesante esta por venir, vamos al siguiente commit.
 
 __commit b77b4db__
-4 - Creamos el Deployment
+
+### 4 - Creamos el Deployment
 
 Quien se va a encargar de llevar nuestro contenedor a Kubernetes y crear las replicas necesarias es el Deployment.
 
@@ -153,7 +157,8 @@ Pero hagamos esto un poco mas interesante, entendamos como funciona el balanceo 
 para eso vamos al siguiente commit.
 
 __commit d9c0028__
-5 - Exponemos el nombre de cada pod como variable de entorno.
+
+### 5 - Exponemos el nombre de cada pod como variable de entorno.
 
 ```yaml
     apiVersion: extensions/v1beta1
@@ -215,7 +220,8 @@ Quieres ver algo hermoso, ejecuta este comando y veras como funciona el valanceo
 ya tienes una configuracion básica de tu servicio. Veamos algunos conceptos que le darán más robustes a tu solucion en el siguiente commit.
 
 __commit 88ad465__
-6 - Limitamos el consumo de cada Pod
+
+### 6 - Limitamos el consumo de cada Pod
 
 Con kubernetes podemos establecer cuanta RAM y cuanta CPU va a tener disponible cada POD, de esta forma podemos controlar el uso y evitar que un error de código eleve el uso de CPU y Memoria y pueda hacer caer al Nodo completo, solo por poner un ejemplo.
 
@@ -267,10 +273,11 @@ Ya a esta altura deberias saber como aplicarlo pero te dejo el comando por si ac
     kubectl apply -f deployment.yaml
 ```
 
-7 - Este commit se perdio en el limbo XD
+### 7 - Este commit se perdio en el limbo XD
 
 __commit 486b6c7__
-8 - Una mirada final de lo que se puede hacer
+
+### 8 - Una mirada final de lo que se puede hacer
 
 Lo último que veremos en este ejemplo son readinessProbe y livenessProbe.
 
